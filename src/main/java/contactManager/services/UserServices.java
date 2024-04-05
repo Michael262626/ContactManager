@@ -12,7 +12,7 @@ public interface UserServices {
     void DeleteAccount(DeleteAccountRequest deleteAccountRequest);
     CreateContactResponse addContact(CreateContactRequest createContactRequest);
     EditContactResponse editContact(EditContactRequest editContactRequest);
-    DeleteContactResponse deleteContact(DeleteContactRequest deleteContactRequest);
+    void deleteContact(DeleteContactRequest deleteContactRequest);
     void logout(LogoutRequest logoutRequest);
      List<Contact>  findAllContact();
     GetContactResponse findContact(GetContactRequest getContactRequest);

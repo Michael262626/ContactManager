@@ -26,8 +26,8 @@ public class UserServicesImpl implements UserServices{
         registerRequest.setUsername(registerRequest.getUsername().toLowerCase());
         validate(registerRequest.getUsername());
         User user = map(registerRequest);
-        RegisterUserResponse result = map(user);
         users.save(user);
+        RegisterUserResponse result = map(user);
         return result;
     }
     private void validate(String username) {
@@ -66,8 +66,8 @@ public class UserServicesImpl implements UserServices{
     public CreateContactResponse addContact(CreateContactRequest createContactRequest) {
         if(isContactExisting(createContactRequest.getUsername())) throw new ContactExistException("This contact already exist");
         Contact contact = map1(createContactRequest);
-        CreateContactResponse response = map1(contact);
         contacts.save(contact);
+        CreateContactResponse response = map1(contact);
         return response;
     }
     private boolean isContactExisting(String foundContact){
@@ -95,14 +95,13 @@ public class UserServicesImpl implements UserServices{
     }
 
     @Override
-    public DeleteContactResponse deleteContact(DeleteContactRequest deleteContactRequest) {
-        Optional<Contact> optionalContact = Optional.ofNullable(contacts.findContactBy(deleteContactRequest.getUsername()));
-        if (optionalContact.isPresent()) {
-            Contact contact = optionalContact.get();
-            contacts.delete(contact);
-            return mapDeleteResponseWith(contact);
-        } else {
+    public void deleteContact(DeleteContactRequest deleteContactRequest) {
+        List<Contact> matchingContacts = contacts.findContactsBy(deleteContactRequest.getUsername());
+        if(matchingContacts.isEmpty()) {
             throw new ContactNotFoundException("Contact not found for : " + deleteContactRequest.getUsername());
+        } else {
+            Contact contactToDelete = matchingContacts.getFirst();
+            contacts.delete(contactToDelete);
         }
     }
 

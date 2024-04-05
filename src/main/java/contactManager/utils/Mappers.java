@@ -9,9 +9,12 @@ import contactManager.dtos.response.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 
 public class Mappers {
     public static User map(RegisterRequest registerRequest) {
+        //validateInput(registerRequest.getFirstname());
+        //validateInput(registerRequest.getLastname());
         validate1(registerRequest.getFirstname());
         validate2(registerRequest.getLastname());
         validate3(registerRequest.getUsername());
@@ -35,6 +38,10 @@ public class Mappers {
     private static void validate4(String registerRequest){
         if(registerRequest == null) throw new NullPointerException("Password field is required");
     }
+    private static void validateInput(String registerRequest) {
+        if (!registerRequest.matches("^\\d+(\\.\\d+)?$")) throw new InputMismatchException("Invalid Input");
+    }
+
     public static RegisterUserResponse map(User user){
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setId(user.getId());
@@ -65,6 +72,7 @@ public class Mappers {
         return createContactResponse;
     }
     public static Contact map3(EditContactRequest editContactRequest){
+        validateInput(editContactRequest.getNewNumber());
         validateCont(editContactRequest.getNewUsername());
         validateCont1(editContactRequest.getNewNumber());
         Contact contact = new Contact();
@@ -74,8 +82,9 @@ public class Mappers {
     }
     public static EditContactResponse map3(Contact contact){
         EditContactResponse editContactResponse = new EditContactResponse();
+        validateInput(contact.getNumbers());
         editContactResponse.setId(contact.getId());
-        editContactResponse.setUsername(contact.getNumbers());
+        editContactResponse.setUsername(contact.getUsername());
         editContactResponse.setNumber(contact.getNumbers());
         editContactResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
         return editContactResponse;

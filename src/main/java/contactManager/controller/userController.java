@@ -49,7 +49,7 @@ public class userController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, e.getMessage()));
         }
     }
-    @GetMapping("/{AllContacts}")
+    @GetMapping("/getAll/contacts")
     public ResponseEntity<List<Contact>> getAllContacts() {
         try {
             List<Contact> contacts = userServices.findAllContact();
@@ -69,16 +69,16 @@ public class userController {
         }
     }
 
-    @DeleteMapping("/{deleteContacts}")
+    @DeleteMapping("/delete/contact")
     public ResponseEntity<?> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) {
         try{
-            var result = userServices.deleteContact(deleteContactRequest);
-            return new ResponseEntity<>(new ApiResponse(true,result), CREATED);
+            userServices.deleteContact(deleteContactRequest);
+            return new ResponseEntity<>(new ApiResponse(true,NO_CONTENT), CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(new ApiResponse(false,e.getMessage()),BAD_REQUEST);
         }
     }
-    @DeleteMapping("/{deleteUser}")
+    @DeleteMapping("/delete/user")
     public  ResponseEntity<?> deleteUser(@RequestBody DeleteAccountRequest deleteAccountRequest){
         try{
             userServices.DeleteAccount(deleteAccountRequest);
@@ -87,7 +87,7 @@ public class userController {
             return new ResponseEntity<>(new ApiResponse(false,e.getMessage()),BAD_REQUEST);
         }
     }
-    @PatchMapping("/{login}")
+    @PatchMapping("/login/user")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
         try{
                 userServices.login(loginRequest);
@@ -96,7 +96,7 @@ public class userController {
             return new ResponseEntity<>(new ApiResponse(false,e.getMessage()),BAD_REQUEST);
         }
     }
-    @PatchMapping("/{logout}")
+    @PatchMapping("/logout/user")
     public ResponseEntity<?> logoutUser(@RequestBody LogoutRequest logoutRequest) {
         try {
             userServices.logout(logoutRequest);
