@@ -52,10 +52,15 @@ public class Mappers {
     public static Contact map1(CreateContactRequest createContactRequest){
         validateCont(createContactRequest.getUsername());
         validateCont1(createContactRequest.getNumber());
+        validateEmail(createContactRequest.getEmail());
         Contact contact = new Contact();
         contact.setUsername(createContactRequest.getUsername());
+        contact.setEmail(createContactRequest.getEmail());
         contact.setNumbers(createContactRequest.getNumber());
         return contact;
+    }
+    private static void validateEmail(String email){
+        if(!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) throw new InputMismatchException("Invalid Email");
     }
     private static void validateCont (String registerRequest){
         if(registerRequest == null) throw new NullPointerException("Username field is required");
@@ -75,17 +80,19 @@ public class Mappers {
         validateInput(editContactRequest.getNewNumber());
         validateCont(editContactRequest.getNewUsername());
         validateCont1(editContactRequest.getNewNumber());
+        validateEmail(editContactRequest.getNewEmailAddress());
         Contact contact = new Contact();
         contact.setUsername(editContactRequest.getNewUsername());
         contact.setNumbers(editContactRequest.getNewNumber());
+        contact.setEmail(editContactRequest.getNewEmailAddress());
         return contact;
     }
     public static EditContactResponse map3(Contact contact){
         EditContactResponse editContactResponse = new EditContactResponse();
-        validateInput(contact.getNumbers());
         editContactResponse.setId(contact.getId());
         editContactResponse.setUsername(contact.getUsername());
         editContactResponse.setNumber(contact.getNumbers());
+        editContactResponse.setEmail(contact.getEmail());
         editContactResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
         return editContactResponse;
     }

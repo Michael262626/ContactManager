@@ -6,4 +6,5 @@ import lombok.Data;
 public class EditContactRequest {
     private String newUsername;
     private String newNumber;
+    private String newEmailAddress;
 }
