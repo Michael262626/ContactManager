@@ -3,8 +3,7 @@ package contactManager.dtos.request;
 import lombok.Data;
 
 @Data
-public class CreateContactRequest {
+public class DeleteContactRequest {
     private String username;
-    private String email;
-    private String number;
+    private String numbers;
 }
