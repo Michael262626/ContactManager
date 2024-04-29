@@ -8,5 +8,6 @@ public class EditContactResponse {
     private String username;
     private String number;
     private String email;
+    private String name;
     private String date;
 }

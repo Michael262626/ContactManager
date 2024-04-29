@@ -12,6 +12,7 @@ import contactManager.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static contactManager.utils.Mappers.*;
@@ -66,14 +67,14 @@ public class UserServicesImpl implements UserServices{
 
     @Override
     public CreateContactResponse addContact(CreateContactRequest createContactRequest) {
-        if(isContactExisting(createContactRequest.getUsername())) throw new ContactExistException("This contact already exist");
+        if(isContactExisting(createContactRequest.getNumber())) throw new ContactExistException("This contact already exist");
         Contact contact = map1(createContactRequest);
         contacts.save(contact);
         return map1(contact);
     }
-    private boolean isContactExisting(String foundContact){
+    private boolean isContactExisting(String number){
         for (Contact contact : contacts.findAll()) {
-            if (contact.getUsername().equals(foundContact)) {
+            if (contact.getNumbers().equals(number)) {
                 return true;
             }
         }
@@ -82,24 +83,25 @@ public class UserServicesImpl implements UserServices{
 
     @Override
     public EditContactResponse editContact(EditContactRequest editContactRequest) {
-        Contact contact = findContactBy(editContactRequest.getNewUsername());
+        Contact contact = findContactBy(editContactRequest.getNewNumber());
         Contact set = map3(editContactRequest);
         contacts.save(set);
         EditContactResponse updateResponse = map3(contact);
         contacts.delete(contact);
         return updateResponse;
     }
-    private Contact findContactBy(String username) {
-        Contact foundContact = contacts.findByUsername(username);
-        if (foundContact == null) throw new ContactNotFoundException(String.format("%s not found", username));
+    private Contact findContactBy(String number) {
+        Contact foundContact = contacts.findByNumbers(number);
+        if (foundContact == null) throw new ContactNotFoundException(String.format("%s not found", number));
         return foundContact;
     }
 
     @Override
     public void deleteContact(DeleteContactRequest deleteContactRequest) {
-        List<Contact> matchingContacts = contacts.findContactsBy(deleteContactRequest.getUsername());
+        isContactExisting(deleteContactRequest.getName());
+        List<Contact> matchingContacts = contacts.findContactsBy(deleteContactRequest.getName());
         if(matchingContacts.isEmpty()) {
-            throw new ContactNotFoundException("Contact not found for : " + deleteContactRequest.getUsername());
+            throw new ContactNotFoundException("Contact not found for : " + deleteContactRequest.getName());
         } else {
             Contact contactToDelete = matchingContacts.getFirst();
             contacts.delete(contactToDelete);
@@ -124,12 +126,11 @@ public class UserServicesImpl implements UserServices{
 
     @Override
     public GetContactResponse findContact(GetContactRequest getContactRequest) {
-        Contact contact = contacts.findContactBy(getContactRequest.getUsername());
-        GetContactResponse result = map4(contact);
-        if (contact.getUsername() == null || contact.getUsername().isEmpty()) {
-            throw new UsernameNotFoundException("Contact was not found for : " + getContactRequest.getUsername());
+        Contact contact = findContactBy(getContactRequest.getNumber());
+        if (contact.getName() == null || contact.getName().isEmpty() || !contact.getNumbers().equals(getContactRequest.getNumber())) {
+            throw new UsernameNotFoundException("Contact was not found for");
         }
-        return result;
+        return map4(contact);
     }
     @Override
     public long numberOfUsers() {
@@ -153,8 +154,8 @@ public class UserServicesImpl implements UserServices{
     @Override
     public GetMessageResponse getMessage(GetMessageSingleRequest getMessageRequest) {
         Message message = messages.findMessageByMessageId(getMessageRequest.getMessageId());
-        if (message == null || message.getSender() == null ) {
-            throw new UsernameNotFoundException("Message not found ");
+        if (message == null || getMessageRequest.getSender() == null ) {
+            throw new UsernameNotFoundException("Message not found");
         }
         return map(message);
     }
@@ -165,12 +166,24 @@ public class UserServicesImpl implements UserServices{
 
     @Override
     public List<Message> getConversation(GetMessageRequest getMessageRequest) {
-        User user = findById(getMessageRequest.getSender());
-        List<Message> messageList = messages.findAll();
+        findById(getMessageRequest.getSender());
+        List<Message> messageList = messages.findBySender(getMessageRequest.getSender());
         if (messageList.isEmpty()) {
             throw new NotFoundException("No messages found");
         }
         return messageList;
+    }
+    @Override
+    public List<Contact> findContactsByAlphabet(FindContactRequest alphabet) {
+        String lowercaseAlphabet = alphabet.getUsername().toLowerCase();
+        List<Contact> allContacts = contacts.findAll();
+        List<Contact> filteredContacts = new ArrayList<>();
+        for (Contact contact : allContacts) {
+            if (contact.getName().toLowerCase().startsWith(lowercaseAlphabet)) {
+                filteredContacts.add(contact);
+            }
+        }
+        return filteredContacts;
     }
 
     @Override

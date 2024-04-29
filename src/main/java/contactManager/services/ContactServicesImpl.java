@@ -10,6 +10,10 @@ import contactManager.dtos.response.DeleteContactResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static contactManager.utils.Mappers.*;
 
 @Service
@@ -30,7 +34,7 @@ public class ContactServicesImpl implements ContactServices {
 
     @Override
     public Contact findContact(FindContactRequest findContactRequest, Contact findContact) {
-        return contacts.findContactBy(findContact.getUsername());
+        return contacts.findContactBy(findContact.getName());
     }
 
     @Override

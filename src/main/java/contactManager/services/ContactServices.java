@@ -8,6 +8,8 @@ import contactManager.dtos.request.FindContactRequest;
 import contactManager.dtos.response.DeleteContactResponse;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
+
 public interface ContactServices  {
     Contact createContact(CreateContactRequest createContactRequest);
     Contact editContact(EditContactRequest editContactRequest);
