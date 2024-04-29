@@ -49,11 +49,11 @@ public class Mappers {
         return registerUserResponse;
     }
     public static Contact map1(CreateContactRequest createContactRequest){
-        validateCont(createContactRequest.getUsername());
+        validateCont(createContactRequest.getName());
         validateCont1(createContactRequest.getNumber());
         validateEmail(createContactRequest.getEmail());
         Contact contact = new Contact();
-        contact.setUsername(createContactRequest.getUsername());
+        contact.setName(createContactRequest.getName());
         contact.setEmail(createContactRequest.getEmail());
         contact.setNumbers(createContactRequest.getNumber());
         return contact;
@@ -89,7 +89,7 @@ public class Mappers {
     public static CreateContactResponse map1(Contact contact){
         CreateContactResponse createContactResponse = new CreateContactResponse();
         createContactResponse.setId(contact.getId());
-        createContactResponse.setUsername(contact.getUsername());
+        createContactResponse.setUsername(contact.getName());
         createContactResponse.setNumber(contact.getNumbers());
         createContactResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
         return createContactResponse;
@@ -100,15 +100,15 @@ public class Mappers {
         validateCont1(editContactRequest.getNewNumber());
         validateEmail(editContactRequest.getNewEmailAddress());
         Contact contact = new Contact();
-        contact.setUsername(editContactRequest.getNewUsername());
         contact.setNumbers(editContactRequest.getNewNumber());
+        contact.setName(editContactRequest.getName());
         contact.setEmail(editContactRequest.getNewEmailAddress());
         return contact;
     }
     public static EditContactResponse map3(Contact contact){
         EditContactResponse editContactResponse = new EditContactResponse();
         editContactResponse.setId(contact.getId());
-        editContactResponse.setUsername(contact.getUsername());
+        editContactResponse.setName(contact.getName());
         editContactResponse.setNumber(contact.getNumbers());
         editContactResponse.setEmail(contact.getEmail());
         editContactResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
@@ -123,7 +123,7 @@ public class Mappers {
     }
     public static DeleteContactResponse mapDeleteResponseWith(Contact contact) {
         DeleteContactResponse deleteContactResponse =new DeleteContactResponse();
-        deleteContactResponse.setUsername(contact.getUsername());
+        deleteContactResponse.setUsername(contact.getName());
         return deleteContactResponse;
     }
     public static DeleteMessageResponse mapDeleteMessage(Message message) {
@@ -133,7 +133,7 @@ public class Mappers {
     }
     public static GetContactResponse map4(Contact contact){
         GetContactResponse getContactResponse = new GetContactResponse();
-        getContactResponse.setUsername(contact.getUsername());
+        getContactResponse.setName(contact.getName());
         getContactResponse.setNumber(contact.getNumbers());
         return getContactResponse;
     }

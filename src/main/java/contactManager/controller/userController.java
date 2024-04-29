@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.*;
 public class userController {
     @Autowired
     private UserServices userServices;
-    @PostMapping
+    @PostMapping("register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try{
             var result = userServices.registerUser(registerRequest);
@@ -78,6 +78,15 @@ public class userController {
     public ResponseEntity<ApiResponse> getContact(@RequestBody GetContactRequest getContactRequest) {
         try {
             var contact = userServices.findContact(getContactRequest);
+            return new ResponseEntity<>(new ApiResponse(true,contact), CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(false,e.getMessage()),BAD_REQUEST);
+        }
+    }
+    @GetMapping("/get/contacts")
+    public ResponseEntity<ApiResponse> getContact(@RequestBody FindContactRequest getContactRequest) {
+        try {
+            var contact = userServices.findContactsByAlphabet(getContactRequest);
             return new ResponseEntity<>(new ApiResponse(true,contact), CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(false,e.getMessage()),BAD_REQUEST);

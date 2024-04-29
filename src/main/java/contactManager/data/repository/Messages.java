@@ -9,4 +9,6 @@ public interface Messages extends MongoRepository<Message, String> {
     Message findMessageByMessageId(String sender);
 
     List<Message> findAllBy(String messageId);
+
+    List<Message> findBySender(String sender);
 }

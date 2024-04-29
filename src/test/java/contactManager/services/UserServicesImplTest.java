@@ -152,7 +152,7 @@ class UserServicesImplTest {
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
@@ -165,12 +165,14 @@ class UserServicesImplTest {
         registerRequest.setLastname("lastname");
         registerRequest.setUsername("username");
         registerRequest.setPassword("password");
+
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
+        userServices.addContact(createContactRequest);
         try{
             userServices.addContact(createContactRequest);
             userServices.addContact(createContactRequest);
@@ -185,22 +187,22 @@ class UserServicesImplTest {
         registerRequest.setLastname("lastname");
         registerRequest.setUsername("username");
         registerRequest.setPassword("password");
+
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
         GetContactRequest getContactRequest = new GetContactRequest();
-        getContactRequest.setUsername(createContactRequest.getUsername());
+        getContactRequest.setNumber(createContactRequest.getNumber());
 
         GetContactResponse getContactResponse = new GetContactResponse();
-        getContactResponse.setUsername(getContactRequest.getUsername());
+        getContactResponse.setName(createContactRequest.getName());
         getContactResponse.setNumber(createContactRequest.getNumber());
 
-        userServices.findContact(getContactRequest);
         assertEquals(getContactResponse,userServices.findContact(getContactRequest));
     }
     @Test
@@ -210,16 +212,17 @@ class UserServicesImplTest {
         registerRequest.setLastname("lastname");
         registerRequest.setUsername("username");
         registerRequest.setPassword("password");
+
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
         DeleteContactRequest deleteContactRequest = new DeleteContactRequest();
-        deleteContactRequest.setUsername(createContactRequest.getUsername());
+        deleteContactRequest.setName(createContactRequest.getName());
         deleteContactRequest.setNumbers(createContactRequest.getNumber());
         userServices.deleteContact(deleteContactRequest);
         assertEquals(0, userServices.numberOfContacts());
@@ -233,15 +236,17 @@ class UserServicesImplTest {
         registerRequest.setPassword("password");
         userServices.registerUser(registerRequest);
 
+
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
         EditContactRequest editContactRequest = new EditContactRequest();
-        editContactRequest.setNewUsername(createContactRequest.getUsername());
-        editContactRequest.setNewNumber("4321");
+        editContactRequest.setName(createContactRequest.getName());
+        editContactRequest.setNewUsername("newUsername");
+        editContactRequest.setNewNumber("1234");
         editContactRequest.setNewEmailAddress("banks@gmail.com");
         userServices.editContact(editContactRequest);
         assertEquals(1, userServices.numberOfContacts());
@@ -256,13 +261,13 @@ class UserServicesImplTest {
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
         CreateContactRequest createContactRequest1 = new CreateContactRequest();
-        createContactRequest1.setUsername("username1");
+        createContactRequest1.setName("username1");
         createContactRequest1.setNumber("4321");
         createContactRequest1.setEmail("ike@gmail.com");
         userServices.addContact(createContactRequest1);
@@ -279,7 +284,7 @@ class UserServicesImplTest {
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("name");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
@@ -292,14 +297,14 @@ class UserServicesImplTest {
         userServices.registerUser(registerRequest1);
 
         CreateContactRequest createContactRequest1 = new CreateContactRequest();
-        createContactRequest1.setUsername("username1");
+        createContactRequest1.setName("michael");
         createContactRequest1.setNumber("4321");
         createContactRequest1.setEmail("ike@gmail.com");
         userServices.addContact(createContactRequest1);
 
         MessageRequest messageRequest = new MessageRequest();
-        messageRequest.setSender(createContactRequest.getUsername());
-        messageRequest.setReceiver(createContactRequest1.getUsername());
+        messageRequest.setSender(registerRequest.getUsername());
+        messageRequest.setReceiver(registerRequest1.getUsername());
         messageRequest.setMessage("messages");
         userServices.sendMessage(messageRequest);
         assertEquals(1, userServices.numberOfMessages());
@@ -311,10 +316,11 @@ class UserServicesImplTest {
         registerRequest.setLastname("lastname");
         registerRequest.setUsername("username");
         registerRequest.setPassword("password");
+
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
+        createContactRequest.setName("username");
         createContactRequest.setNumber("1234");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
@@ -322,24 +328,26 @@ class UserServicesImplTest {
         RegisterRequest registerRequest1 = new RegisterRequest();
         registerRequest1.setFirstname("firstname");
         registerRequest1.setLastname("lastname");
-        registerRequest1.setUsername("michael");
+        registerRequest1.setUsername("user");
         registerRequest1.setPassword("password");
+
         userServices.registerUser(registerRequest1);
 
         CreateContactRequest createContactRequest1 = new CreateContactRequest();
-        createContactRequest1.setUsername("username1");
-        createContactRequest1.setNumber("4321");
-        createContactRequest1.setEmail("ike@gmail.com");
+        createContactRequest1.setName("username");
+        createContactRequest1.setNumber("1234");
+        createContactRequest1.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest1);
 
         MessageRequest messageRequest = new MessageRequest();
-        messageRequest.setSender(createContactRequest.getUsername());
-        messageRequest.setReceiver(createContactRequest1.getUsername());
+        messageRequest.setSender(registerRequest.getUsername());
+        messageRequest.setReceiver(registerRequest1.getUsername());
         messageRequest.setMessage("messages");
         var message = userServices.sendMessage(messageRequest);
 
         GetMessageSingleRequest getMessageRequest = new GetMessageSingleRequest();
         getMessageRequest.setSender(messageRequest.getSender());
+        getMessageRequest.setMessageId(message.getMessageId());
         userServices.getMessage(getMessageRequest);
 
         GetMessageResponse getMessageResponse = new GetMessageResponse();
@@ -355,30 +363,32 @@ class UserServicesImplTest {
         registerRequest.setLastname("lastname");
         registerRequest.setUsername("username");
         registerRequest.setPassword("password");
+
         userServices.registerUser(registerRequest);
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
-        createContactRequest.setUsername("username");
-        createContactRequest.setNumber("1234");
+        createContactRequest.setName("username");
+        createContactRequest.setNumber("12324");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
         RegisterRequest registerRequest1 = new RegisterRequest();
         registerRequest1.setFirstname("firstname");
         registerRequest1.setLastname("lastname");
-        registerRequest1.setUsername("michael");
+        registerRequest1.setUsername("user");
         registerRequest1.setPassword("password");
+
         userServices.registerUser(registerRequest1);
 
         CreateContactRequest createContactRequest1 = new CreateContactRequest();
-        createContactRequest1.setUsername("username1");
-        createContactRequest1.setNumber("4321");
-        createContactRequest1.setEmail("ike@gmail.com");
+        createContactRequest1.setName("mike");
+        createContactRequest1.setNumber("1234");
+        createContactRequest1.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest1);
 
         MessageRequest messageRequest = new MessageRequest();
-        messageRequest.setSender(createContactRequest.getUsername());
-        messageRequest.setReceiver(createContactRequest1.getUsername());
+        messageRequest.setSender(registerRequest.getUsername());
+        messageRequest.setReceiver(registerRequest1.getUsername());
         messageRequest.setMessage("messages");
         var message = userServices.sendMessage(messageRequest);
 
@@ -386,6 +396,39 @@ class UserServicesImplTest {
         deleteMessageRequest.setMessageId(message.getMessageId());
         userServices.deleteMessage(deleteMessageRequest);
         assertEquals(0, userServices.numberOfMessages());
+    }
+    @Test
+    public void testToGetContactByCharacter(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setFirstname("firstname");
+        registerRequest.setLastname("lastname");
+        registerRequest.setUsername("username");
+        registerRequest.setPassword("password");
+
+        userServices.registerUser(registerRequest);
+
+        CreateContactRequest createContactRequest = new CreateContactRequest();
+        createContactRequest.setName("mic");
+        createContactRequest.setNumber("1234");
+        createContactRequest.setEmail("michael@gmail.com");
+        userServices.addContact(createContactRequest);
+
+        RegisterRequest registerRequest1 = new RegisterRequest();
+        registerRequest1.setFirstname("firstname");
+        registerRequest1.setLastname("lastname");
+        registerRequest1.setUsername("user");
+        registerRequest1.setPassword("password");
+        userServices.registerUser(registerRequest1);
+
+        CreateContactRequest createContactRequest1 = new CreateContactRequest();
+        createContactRequest1.setName("mike");
+        createContactRequest1.setNumber("12334");
+        createContactRequest1.setEmail("michael@gmail.com");
+        userServices.addContact(createContactRequest1);
+        FindContactRequest findContactRequest = new FindContactRequest();
+        findContactRequest.setUsername("u");
+        userServices.findContactsByAlphabet(findContactRequest);
+        assertEquals(2, userServices.numberOfContacts());
     }
 
 

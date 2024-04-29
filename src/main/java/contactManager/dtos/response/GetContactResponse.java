@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class GetContactResponse {
-    private String username;
+    private String name;
     private String number;
 }
