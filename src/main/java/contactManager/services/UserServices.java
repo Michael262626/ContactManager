@@ -15,7 +15,7 @@ public interface UserServices {
     EditContactResponse editContact(EditContactRequest editContactRequest);
     void deleteContact(DeleteContactRequest deleteContactRequest);
     void logout(LogoutRequest logoutRequest);
-    List<Contact>  findAllContact(FindContactRequest findContactRequest);
+    List<GetAllContactResponse> findAllContact(FindContactRequest findContactRequest);
     GetContactResponse findContact(GetContactRequest getContactRequest);
     long numberOfUsers();
     long numberOfContacts();

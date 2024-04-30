@@ -4,6 +4,7 @@ import contactManager.data.model.Contact;
 import contactManager.data.model.Message;
 import contactManager.dtos.request.*;
 import contactManager.dtos.response.ApiResponse;
+import contactManager.dtos.response.GetAllContactResponse;
 import contactManager.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,8 +96,8 @@ public class userController {
     @GetMapping("/getAll/contacts")
     public ResponseEntity<?> getAllContacts(@RequestBody FindContactRequest findContactRequest) {
         try {
-            List<Contact> contacts = userServices.findAllContact(findContactRequest);
-            return new ResponseEntity<>(new ApiResponse(true,contacts), CREATED);
+            List<GetAllContactResponse> contactResponses = userServices.findAllContact(findContactRequest);
+            return new ResponseEntity<>(new ApiResponse(true,contactResponses), CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
         }

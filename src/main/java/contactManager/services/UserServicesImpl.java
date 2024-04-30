@@ -99,7 +99,7 @@ public class UserServicesImpl implements UserServices{
     @Override
     public void deleteContact(DeleteContactRequest deleteContactRequest) {
         isContactExisting(deleteContactRequest.getName());
-        List<Contact> matchingContacts = contacts.findContactsBy(deleteContactRequest.getName());
+        List<Contact> matchingContacts = contacts.findByUsername(deleteContactRequest.getName());
         if(matchingContacts.isEmpty()) {
             throw new ContactNotFoundException("Contact not found for : " + deleteContactRequest.getName());
         } else {
@@ -114,15 +114,13 @@ public class UserServicesImpl implements UserServices{
         user.setLoggedIn(true);
         users.save(user);
     }
-
     @Override
-    public List<Contact>  findAllContact(FindContactRequest findContactRequest) {
-        findById(findContactRequest.getUsername());
-        List<Contact> contactList = contacts.findContactsBy(findContactRequest.getUsername());
+    public List<GetAllContactResponse> findAllContact(FindContactRequest findContactRequest) {
+        List<Contact> contactList = contacts.findByUsername(findContactRequest.getUsername());
         if (contactList.isEmpty()) {
             throw new NotFoundException("No contacts found for: " + findContactRequest.getUsername());
         }
-        return contactList;
+        return map5(contactList, findContactRequest.getUsername());
     }
 
     @Override
