@@ -8,7 +8,9 @@ import contactManager.dtos.response.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 
 public class Mappers {
     public static User map(RegisterRequest registerRequest) {
@@ -53,6 +55,7 @@ public class Mappers {
         validateCont1(createContactRequest.getNumber());
         validateEmail(createContactRequest.getEmail());
         Contact contact = new Contact();
+        contact.setUsername(createContactRequest.getUsername());
         contact.setName(createContactRequest.getName());
         contact.setEmail(createContactRequest.getEmail());
         contact.setNumbers(createContactRequest.getNumber());
@@ -136,5 +139,20 @@ public class Mappers {
         getContactResponse.setName(contact.getName());
         getContactResponse.setNumber(contact.getNumbers());
         return getContactResponse;
+    }
+    public static List<GetAllContactResponse> map5(List<Contact> contacts, String username) {
+        List<GetAllContactResponse> responses = new ArrayList<>();
+        for (Contact contact : contacts) {
+            if (contact.getUsername().equals(username)) {
+                GetAllContactResponse getContactResponse = new GetAllContactResponse();
+                getContactResponse.setName(contact.getName());
+                getContactResponse.setPhoneNumber(contact.getNumbers());
+                getContactResponse.setUsername(contact.getUsername());
+                getContactResponse.setEmail(contact.getEmail());
+                getContactResponse.setTime(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
+                responses.add(getContactResponse);
+            }
+        }
+        return responses;
     }
 }

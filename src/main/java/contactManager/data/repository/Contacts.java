@@ -8,7 +8,7 @@ import java.util.List;
 public interface Contacts extends MongoRepository<Contact, String> {
     Contact findByNumbers(String number);
 
-    Contact findContactBy(String name);
+    Contact findByName(String name);
 
-    List<Contact> findContactsBy(String username);
+    List<Contact> findByUsername(String username);
 }

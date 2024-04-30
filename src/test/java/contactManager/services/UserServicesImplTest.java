@@ -323,7 +323,7 @@ class UserServicesImplTest {
 
         CreateContactRequest createContactRequest = new CreateContactRequest();
         createContactRequest.setName("username");
-        createContactRequest.setNumber("1234");
+        createContactRequest.setNumber("12354");
         createContactRequest.setEmail("michael@gmail.com");
         userServices.addContact(createContactRequest);
 
