@@ -271,7 +271,9 @@ class UserServicesImplTest {
         createContactRequest1.setNumber("4321");
         createContactRequest1.setEmail("ike@gmail.com");
         userServices.addContact(createContactRequest1);
-        userServices.findAllContact();
+        FindContactRequest findContactRequest = new FindContactRequest();
+        findContactRequest.setUsername(registerRequest.getUsername());
+        userServices.findAllContact(findContactRequest);
         assertEquals(2, userServices.numberOfContacts());
     }
     @Test

@@ -93,12 +93,12 @@ public class userController {
         }
     }
     @GetMapping("/getAll/contacts")
-    public ResponseEntity<List<Contact>> getAllContacts() {
+    public ResponseEntity<?> getAllContacts(@RequestBody FindContactRequest findContactRequest) {
         try {
-            List<Contact> contacts = userServices.findAllContact();
-                return ResponseEntity.ok(contacts);
+            List<Contact> contacts = userServices.findAllContact(findContactRequest);
+            return new ResponseEntity<>(new ApiResponse(true,contacts), CREATED);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 

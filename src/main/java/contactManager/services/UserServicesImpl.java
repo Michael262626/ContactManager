@@ -116,12 +116,13 @@ public class UserServicesImpl implements UserServices{
     }
 
     @Override
-    public List<Contact>  findAllContact() {
-        List<Contact> contact = contacts.findAll();
-        if (contact.isEmpty()) {
-            throw new NotFoundException("No contacts found");
+    public List<Contact>  findAllContact(FindContactRequest findContactRequest) {
+        findById(findContactRequest.getUsername());
+        List<Contact> contactList = contacts.findContactsBy(findContactRequest.getUsername());
+        if (contactList.isEmpty()) {
+            throw new NotFoundException("No contacts found for: " + findContactRequest.getUsername());
         }
-        return contact;
+        return contactList;
     }
 
     @Override
