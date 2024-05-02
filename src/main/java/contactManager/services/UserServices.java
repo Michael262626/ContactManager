@@ -25,4 +25,5 @@ public interface UserServices {
     void deleteMessage(DeleteMessageRequest deleteMessageRequest);
     long numberOfMessages();
     List<Contact> findContactsByAlphabet(FindContactRequest alphabet);
+    ContactSentResponse shareContact(ShareContactRequest request);
 }

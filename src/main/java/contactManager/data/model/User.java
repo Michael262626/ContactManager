@@ -20,4 +20,11 @@ public class User {
     private boolean isLoggedIn = true;
     @DBRef
     private List<Contact> contacts = new ArrayList<>();
+
+    public void addSharedContact(Contact contact) {
+        if (contacts == null) {
+            contacts = new ArrayList<>();
+        }
+        contacts.add(contact);
+    }
 }

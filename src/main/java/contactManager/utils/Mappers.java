@@ -73,6 +73,15 @@ public class Mappers {
         messageResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
         return messageResponse;
     }
+    public static ContactSentResponse contactSentResponse(Contact contact){
+        ContactSentResponse contactSentResponse = new ContactSentResponse();
+        contactSentResponse.setContactId(contact.getId());
+        contactSentResponse.setContactName(contact.getName());
+        contactSentResponse.setContactPhoneNumber(contact.getNumbers());
+        contactSentResponse.setContactEmail(contact.getEmail());
+        contactSentResponse.setDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
+        return contactSentResponse;
+    }
     public static Message map(MessageRequest messageRequest){
         Message message = new contactManager.data.model.Message();
         message.setContent(messageRequest.getMessage());
