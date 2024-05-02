@@ -178,11 +178,20 @@ public class UserServicesImpl implements UserServices{
         List<Contact> allContacts = contacts.findAll();
         List<Contact> filteredContacts = new ArrayList<>();
         for (Contact contact : allContacts) {
-            if (contact.getName().toLowerCase().startsWith(lowercaseAlphabet)) {
+            String lowercaseName = contact.getName().toLowerCase();
+            if (containsCharacter(lowercaseName, lowercaseAlphabet)) {
                 filteredContacts.add(contact);
             }
         }
         return filteredContacts;
+    }
+    private boolean containsCharacter(String name, String alphabet) {
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) == alphabet.charAt(0)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -195,9 +204,23 @@ public class UserServicesImpl implements UserServices{
             messages.delete(messageToDelete);
         }
     }
-
     @Override
     public long numberOfMessages() {
         return messages.findAll().size();
+    }
+    @Override
+    public ContactSentResponse shareContact(ShareContactRequest request) {
+        User sender = users.findByUsername(request.getSenderUsername());
+        User recipient = users.findByUsername(request.getRecipientUsername());
+        if (sender == null || recipient == null) {
+            throw new IllegalArgumentException("Sender or recipient not found");
+        }
+        Contact sharedContact = contacts.findById(request.getContactId(), sender);
+        if (sharedContact == null) {
+            throw new IllegalArgumentException("Contact not found for sender");
+        }
+        recipient.addSharedContact(sharedContact);
+        users.save(recipient);
+        return contactSentResponse(sharedContact);
     }
 }
